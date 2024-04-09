@@ -17,7 +17,6 @@ import { getEquipmentBonuses } from "./equipment";
 import { houseRooms } from "./house-rooms";
 import { itemName } from "./items";
 import { type Markets } from "./market";
-import { type Market } from "./market-fetch";
 import { type Settings } from "./settings";
 import {
   TEA_PER_HOUR,
