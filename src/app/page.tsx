@@ -1,13 +1,21 @@
 "use server";
 
-import { fetchMarket } from "~/services/market-fetch";
+import {
+  fetch3DayMarketPercentiles,
+  fetchJsonMarket,
+  refreshMarketDbIfNeeded,
+} from "~/services/market-fetch";
 import ActionsPage from "~/components/actions-page";
 import { ClientOnly } from "~/components/client-only";
 
 export default async function HomePage() {
+  await refreshMarketDbIfNeeded();
+
   const market = {
-    current: await fetchMarket("milkyapi.json"),
-    median: await fetchMarket("medianmarket.json"),
+    current: await fetchJsonMarket("milkyapi.json"),
+    median: await fetchJsonMarket("medianmarket.json"),
+    p10: await fetch3DayMarketPercentiles(10),
+    p90: await fetch3DayMarketPercentiles(90),
   };
 
   return (
