@@ -310,7 +310,7 @@ export function SettingsForm() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="p90" id="input-p90" />
-                    <Label htmlFor="input-p90">3 Days p90 Prices</Label>
+                    <Label htmlFor="input-p90">3 Day p90 Prices</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -356,7 +356,7 @@ export function SettingsForm() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="p10" id="output-p10" />
-                    <Label htmlFor="output-p10">3 Days p10 Prices</Label>
+                    <Label htmlFor="output-p10">3 Day p10 Prices</Label>
                   </div>
                 </RadioGroup>
               </div>
