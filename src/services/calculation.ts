@@ -85,7 +85,7 @@ function getCommunityBuffBonuses(actionType: string, settings: Settings) {
 function getInputPrice(itemHrid: string, settings: Settings, markets: Markets) {
   if (itemHrid === "/items/coin") return 1;
 
-  const market = markets[settings.market.inputPricePeriod];
+  const market = markets[settings.market.inputPricePeriod]!;
   let { bid, ask } = market.market[itemName(itemHrid)] ?? {
     bid: -1,
     ask: -1,
@@ -106,7 +106,7 @@ function getOutputPrice(
 ) {
   if (itemHrid === "/items/coin") return 1;
 
-  const market = markets[settings.market.outputPricePeriod];
+  const market = markets[settings.market.outputPricePeriod]!;
   let { bid, ask } = market.market[itemName(itemHrid)] ?? {
     bid: -1,
     ask: -1,
@@ -129,7 +129,7 @@ function computeOutputBidAskSpread(
   settings: Settings,
   markets: Markets,
 ) {
-  const market = markets[settings.market.outputPricePeriod];
+  const market = markets[settings.market.outputPricePeriod]!;
   const { bid, ask } = market.market[itemName(itemHrid)]!;
   if (ask === -1 || bid === -1) return 1;
 
