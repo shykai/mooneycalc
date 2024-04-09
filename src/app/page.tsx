@@ -24,12 +24,10 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="flex min-h-screen">
-      <div className="container flex flex-col gap-6 py-12">
-        <ClientOnly>
-          <ActionsPage markets={market} />
-        </ClientOnly>
-      </div>
-    </main>
+    <div className="flex flex-col gap-4">
+      <ClientOnly>
+        <ActionsPage markets={market} />
+      </ClientOnly>
+    </div>
   );
 }

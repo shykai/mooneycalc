@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "~/lib/utils";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { Analytics } from "@vercel/analytics/react";
+import TopNavBar from "~/components/top-nav-bar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,7 +30,14 @@ export default function RootLayout({
           inter.variable,
         )}
       >
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <main className="flex min-h-screen flex-col">
+            <div className="container flex flex-col gap-8 py-12">
+              <TopNavBar />
+              {children}
+            </div>
+          </main>
+        </TooltipProvider>
         <Analytics />
       </body>
     </html>

@@ -56,7 +56,6 @@ export function SettingsForm() {
         <TabsTrigger value="market">Market</TabsTrigger>
         <TabsTrigger value="other">Other</TabsTrigger>
       </TabsList>
-      <div className="h-4"></div>
       <TabsContent value="levels">
         <Card>
           <CardHeader>

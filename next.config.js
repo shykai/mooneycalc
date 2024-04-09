@@ -4,7 +4,11 @@
  */
 await import("./src/env.js");
 
-/** @type {import("next").NextConfig} */
-const config = {};
+const withMDX = (await import("@next/mdx")).default();
 
-export default config;
+/** @type {import("next").NextConfig} */
+const config = {
+  pageExtensions: ["mdx", "ts", "tsx"],
+};
+
+export default withMDX(config);
