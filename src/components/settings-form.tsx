@@ -1,6 +1,10 @@
 "use client";
 
-import { useSettingsStore } from "~/services/settings";
+import {
+  InputPricePeriodSchema,
+  OutputPricePeriodSchema,
+  useSettingsStore,
+} from "~/services/settings";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { skills } from "~/services/skills";
@@ -264,59 +268,98 @@ export function SettingsForm() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-around">
-              <BidAskSlider
-                label="Input Item Prices"
-                inverted={true}
-                value={settings.market.inputBidAskProportion}
-                updateValue={(value) =>
-                  updateSettings({
-                    ...settings,
-                    market: {
-                      ...settings.market,
-                      inputBidAskProportion: value,
-                    },
-                  })
-                }
-              />
-              <BidAskSlider
-                label="Output Item Prices"
-                inverted={false}
-                value={settings.market.outputBidAskProportion}
-                updateValue={(value) =>
-                  updateSettings({
-                    ...settings,
-                    market: {
-                      ...settings.market,
-                      outputBidAskProportion: value,
-                    },
-                  })
-                }
-              />
-              <RadioGroup
-                value={settings.market.pricePeriod}
-                onValueChange={(value) => {
-                  if (value !== "latest" && value !== "median") {
-                    return;
+              <div className="flex flex-col gap-4">
+                <BidAskSlider
+                  label="Input Item Prices"
+                  inverted={true}
+                  value={settings.market.inputBidAskProportion}
+                  updateValue={(value) =>
+                    updateSettings({
+                      ...settings,
+                      market: {
+                        ...settings.market,
+                        inputBidAskProportion: value,
+                      },
+                    })
                   }
+                />
+                <RadioGroup
+                  value={settings.market.inputPricePeriod}
+                  onValueChange={(value) => {
+                    const result = InputPricePeriodSchema.safeParse(value);
+                    if (!result.success) {
+                      return;
+                    }
 
-                  return updateSettings({
-                    ...settings,
-                    market: {
-                      ...settings.market,
-                      pricePeriod: value,
-                    },
-                  });
-                }}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="latest" id="latest" />
-                  <Label htmlFor="latest">Latest Prices</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="median" id="median" />
-                  <Label htmlFor="median">24h Median Prices</Label>
-                </div>
-              </RadioGroup>
+                    return updateSettings({
+                      ...settings,
+                      market: {
+                        ...settings.market,
+                        inputPricePeriod: result.data,
+                      },
+                    });
+                  }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="current" id="input-current" />
+                    <Label htmlFor="current">Latest Prices</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="median" id="input-median" />
+                    <Label htmlFor="median">24h Median Prices</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="p90" id="input-p90" />
+                    <Label htmlFor="input-p90">3 Days p90 Prices</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              <div className="flex flex-col gap-4">
+                <BidAskSlider
+                  label="Output Item Prices"
+                  inverted={false}
+                  value={settings.market.outputBidAskProportion}
+                  updateValue={(value) =>
+                    updateSettings({
+                      ...settings,
+                      market: {
+                        ...settings.market,
+                        outputBidAskProportion: value,
+                      },
+                    })
+                  }
+                />
+                <RadioGroup
+                  value={settings.market.outputPricePeriod}
+                  onValueChange={(value) => {
+                    const result = OutputPricePeriodSchema.safeParse(value);
+                    if (!result.success) {
+                      return;
+                    }
+
+                    return updateSettings({
+                      ...settings,
+                      market: {
+                        ...settings.market,
+                        outputPricePeriod: result.data,
+                      },
+                    });
+                  }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="current" id="output-current" />
+                    <Label htmlFor="output-latest">Latest Prices</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="median" id="output-median" />
+                    <Label htmlFor="output-median">24h Median Prices</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="p10" id="output-p10" />
+                    <Label htmlFor="output-p10">3 Days p10 Prices</Label>
+                  </div>
+                </RadioGroup>
+              </div>
             </div>
           </CardContent>
         </Card>

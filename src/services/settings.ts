@@ -3,6 +3,20 @@ import { type Mutate, type StoreApi, create } from "zustand";
 import { persist } from "zustand/middleware";
 import { z } from "zod";
 
+export const InputPricePeriodSchema = z.union([
+  z.literal("current"),
+  z.literal("median"),
+  z.literal("p90"),
+]);
+export type InputPricePeriod = z.infer<typeof InputPricePeriodSchema>;
+
+export const OutputPricePeriodSchema = z.union([
+  z.literal("current"),
+  z.literal("median"),
+  z.literal("p10"),
+]);
+export type OutputPricePeriod = z.infer<typeof OutputPricePeriodSchema>;
+
 const SettingsSchema = z.object({
   levels: z.record(z.number()),
   equipment: z.record(z.union([z.string(), z.null()])),
@@ -12,16 +26,8 @@ const SettingsSchema = z.object({
   market: z.object({
     inputBidAskProportion: z.number(),
     outputBidAskProportion: z.number(),
-    inputPricePeriod: z.union([
-      z.literal("current"),
-      z.literal("median"),
-      z.literal("p90"),
-    ]),
-    outputPricePeriod: z.union([
-      z.literal("current"),
-      z.literal("median"),
-      z.literal("p10"),
-    ]),
+    inputPricePeriod: InputPricePeriodSchema,
+    outputPricePeriod: OutputPricePeriodSchema,
   }),
   filters: z.object({
     hideUnmetLevelRequirements: z.boolean(),
