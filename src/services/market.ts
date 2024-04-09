@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { useSettingsStore } from "./settings";
 import { type Market } from "./market-fetch";
 
 export interface Markets {
@@ -11,15 +10,15 @@ export interface Markets {
 
 export const MarketContext = createContext<Markets | null>(null);
 
-export function useMarket() {
+export function useMarkets() {
   const markets = useContext(MarketContext);
-  const pricePeriod = useSettingsStore(
-    (state) => state.settings.market.pricePeriod,
-  );
+  // const pricePeriod = useSettingsStore(
+  //   (state) => state.settings.market.pricePeriod,
+  // );
 
   if (!markets) {
     throw new Error("Market context not found");
   }
 
-  return pricePeriod === "latest" ? markets.current : markets.median;
+  return markets;
 }

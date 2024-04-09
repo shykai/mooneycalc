@@ -16,6 +16,7 @@ import { type ActionDetail, gameData, type ItemCount } from "./data";
 import { getEquipmentBonuses } from "./equipment";
 import { houseRooms } from "./house-rooms";
 import { itemName } from "./items";
+import { type Markets } from "./market";
 import { type Market } from "./market-fetch";
 import { type Settings } from "./settings";
 import {
@@ -82,9 +83,10 @@ function getCommunityBuffBonuses(actionType: string, settings: Settings) {
   return buffEffects;
 }
 
-function getInputPrice(itemHrid: string, settings: Settings, market: Market) {
+function getInputPrice(itemHrid: string, settings: Settings, markets: Markets) {
   if (itemHrid === "/items/coin") return 1;
 
+  const market = markets[settings.market.inputPricePeriod];
   let { bid, ask } = market.market[itemName(itemHrid)] ?? {
     bid: -1,
     ask: -1,
@@ -98,9 +100,14 @@ function getInputPrice(itemHrid: string, settings: Settings, market: Market) {
   return marketPrice;
 }
 
-function getOutputPrice(itemHrid: string, settings: Settings, market: Market) {
+function getOutputPrice(
+  itemHrid: string,
+  settings: Settings,
+  markets: Markets,
+) {
   if (itemHrid === "/items/coin") return 1;
 
+  const market = markets[settings.market.outputPricePeriod];
   let { bid, ask } = market.market[itemName(itemHrid)] ?? {
     bid: -1,
     ask: -1,
@@ -118,12 +125,24 @@ function getOutputPrice(itemHrid: string, settings: Settings, market: Market) {
   return bestPrice;
 }
 
+function computeOutputBidAskSpread(
+  itemHrid: string,
+  settings: Settings,
+  markets: Markets,
+) {
+  const market = markets[settings.market.outputPricePeriod];
+  const { bid, ask } = market.market[itemName(itemHrid)]!;
+  if (ask === -1 || bid === -1) return 1;
+
+  return (ask - bid) / ask;
+}
+
 function computeSingleAction(
   action: ActionDetail,
   teaLoadout: TeaLoadout,
   equipmentBonuses: Bonuses,
   settings: Settings,
-  market: Market,
+  markets: Markets,
 ): ComputedAction {
   // Compute bonuses
   const houseBonuses = getHouseBonuses(action.type, settings);
@@ -189,28 +208,22 @@ function computeSingleAction(
 
   const inputsCost = inputs.reduce(
     (sum, input) =>
-      sum + getInputPrice(input.itemHrid, settings, market) * input.count,
+      sum + getInputPrice(input.itemHrid, settings, markets) * input.count,
     0,
   );
   const revenue = outputs.reduce((sum, output) => {
     return (
-      sum + getOutputPrice(output.itemHrid, settings, market) * output.count
+      sum + getOutputPrice(output.itemHrid, settings, markets) * output.count
     );
   }, 0);
 
-  const outputBidAskSpreads = outputs.map((output) => {
-    const { bid, ask } = market.market[itemName(output.itemHrid)] ?? {
-      bid: -1,
-      ask: -1,
-    };
-    if (ask === -1 || bid === -1) return 1;
-
-    return (ask - bid) / ask;
-  });
+  const outputBidAskSpreads = outputs.map((output) =>
+    computeOutputBidAskSpread(output.itemHrid, settings, markets),
+  );
   const outputMaxBidAskSpread = Math.max(...outputBidAskSpreads);
 
   const teasCost = teaLoadout.teaHrids.reduce(
-    (sum, tea) => sum + getInputPrice(tea, settings, market),
+    (sum, tea) => sum + getInputPrice(tea, settings, markets),
     0,
   );
 
@@ -241,7 +254,7 @@ function getDrinkSlots(settings: Settings) {
   return 1 + pouch.equipmentDetail.combatStats.drinkSlots;
 }
 
-export function computeActions(settings: Settings, market: Market) {
+export function computeActions(settings: Settings, markets: Markets) {
   let filteredActions = actions;
 
   // Filter out combat and enhancement actions
@@ -312,7 +325,7 @@ export function computeActions(settings: Settings, market: Market) {
         teaLoadout,
         equipmentBonusesByActionType[a.type]!,
         settings,
-        market,
+        markets,
       );
     });
 

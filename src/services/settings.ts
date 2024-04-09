@@ -12,7 +12,16 @@ const SettingsSchema = z.object({
   market: z.object({
     inputBidAskProportion: z.number(),
     outputBidAskProportion: z.number(),
-    pricePeriod: z.union([z.literal("latest"), z.literal("median")]),
+    inputPricePeriod: z.union([
+      z.literal("current"),
+      z.literal("median"),
+      z.literal("p90"),
+    ]),
+    outputPricePeriod: z.union([
+      z.literal("current"),
+      z.literal("median"),
+      z.literal("p10"),
+    ]),
   }),
   filters: z.object({
     hideUnmetLevelRequirements: z.boolean(),
@@ -63,7 +72,8 @@ export const initialSettings: Settings = {
   market: {
     inputBidAskProportion: 0.0,
     outputBidAskProportion: 0.0,
-    pricePeriod: "latest",
+    inputPricePeriod: "current",
+    outputPricePeriod: "current",
   },
   filters: {
     hideUnmetLevelRequirements: true,
@@ -120,9 +130,12 @@ function mergeStates(
         outputBidAskProportion:
           persistedState.settings?.market?.outputBidAskProportion ??
           currentState.settings.market.outputBidAskProportion,
-        pricePeriod:
-          persistedState.settings?.market?.pricePeriod ??
-          currentState.settings.market.pricePeriod,
+        inputPricePeriod:
+          persistedState.settings?.market?.inputPricePeriod ??
+          currentState.settings.market.inputPricePeriod,
+        outputPricePeriod:
+          persistedState.settings?.market?.outputPricePeriod ??
+          currentState.settings.market.outputPricePeriod,
       },
       filters: {
         hideUnmetLevelRequirements:

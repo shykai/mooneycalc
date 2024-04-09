@@ -1,15 +1,27 @@
 import React from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import { itemName } from "~/services/items";
-import { useMarket } from "~/services/market";
+import { useMarkets } from "~/services/market";
+import { useSettingsStore } from "~/services/settings";
 
 export interface ItemDetailProps {
   hrid: string;
+  type: "input" | "output";
 }
 
-export const ItemDetail = ({ hrid }: ItemDetailProps) => {
-  const market = useMarket();
+export const ItemDetail = ({ hrid, type }: ItemDetailProps) => {
+  const markets = useMarkets();
+  const marketSettings = useSettingsStore((state) => state.settings.market);
   const name = itemName(hrid);
+
+  let market;
+  if (type === "input") {
+    market = markets[marketSettings.inputPricePeriod];
+  } else if (type === "output") {
+    market = markets[marketSettings.outputPricePeriod];
+  } else {
+    throw new Error("Invalid type");
+  }
 
   return (
     <HoverCard openDelay={0} closeDelay={0}>

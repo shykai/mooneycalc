@@ -4,7 +4,7 @@ import { DataTable } from "~/components/ui/data-table";
 import { useSettingsStore } from "~/services/settings";
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./ui/data-table-column-header";
-import { useMarket } from "~/services/market";
+import { useMarkets } from "~/services/market";
 import { skillName } from "~/services/skills";
 import ItemDetail from "./item-detail";
 import { useMemo } from "react";
@@ -41,7 +41,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
         <>
           {action.teas.map((teaHrid) => (
             <div key={teaHrid}>
-              <ItemDetail hrid={teaHrid} />
+              <ItemDetail hrid={teaHrid} type="input" />
             </div>
           ))}
         </>
@@ -62,7 +62,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
               {input.count.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}{" "}
-              x <ItemDetail hrid={input.itemHrid} />
+              x <ItemDetail hrid={input.itemHrid} type="input" />
             </div>
           ))}
         </>
@@ -96,7 +96,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
               {output.count.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}{" "}
-              x <ItemDetail hrid={output.itemHrid} />
+              x <ItemDetail hrid={output.itemHrid} type="output" />
             </div>
           ))}
         </>
@@ -155,7 +155,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
 
 export function ActionsDataTable() {
   const settings = useSettingsStore((state) => state.settings);
-  const market = useMarket();
+  const markets = useMarkets();
 
   const visibleColumns = useMemo(() => {
     if (settings.filters.showAutoTeas) {
@@ -165,7 +165,7 @@ export function ActionsDataTable() {
     return columns.filter((column) => column.id !== "teas");
   }, [settings.filters.showAutoTeas]);
 
-  const actions = computeActions(settings, market);
+  const actions = computeActions(settings, markets);
 
   return (
     <DataTable
