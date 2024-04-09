@@ -26,6 +26,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { gameData } from "~/services/data";
+import { env } from "~/env";
 
 export function SettingsForm() {
   const settings = useSettingsStore((state) => state.settings);
@@ -308,10 +309,12 @@ export function SettingsForm() {
                     <RadioGroupItem value="median" id="input-median" />
                     <Label htmlFor="median">24h Median Prices</Label>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="p90" id="input-p90" />
-                    <Label htmlFor="input-p90">3 Day p90 Prices</Label>
-                  </div>
+                  {env.NEXT_PUBLIC_PRECENTILE_MARKET_ENABLED === "true" && (
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="p90" id="input-p90" />
+                      <Label htmlFor="input-p90">3 Day p90 Prices</Label>
+                    </div>
+                  )}
                 </RadioGroup>
               </div>
               <div className="flex flex-col gap-4">
@@ -354,10 +357,12 @@ export function SettingsForm() {
                     <RadioGroupItem value="median" id="output-median" />
                     <Label htmlFor="output-median">24h Median Prices</Label>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="p10" id="output-p10" />
-                    <Label htmlFor="output-p10">3 Day p10 Prices</Label>
-                  </div>
+                  {env.NEXT_PUBLIC_PRECENTILE_MARKET_ENABLED === "true" && (
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="p10" id="output-p10" />
+                      <Label htmlFor="output-p10">3 Day p10 Prices</Label>
+                    </div>
+                  )}
                 </RadioGroup>
               </div>
             </div>

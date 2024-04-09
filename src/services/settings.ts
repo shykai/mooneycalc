@@ -2,6 +2,7 @@ import { gameData } from "./data";
 import { type Mutate, type StoreApi, create } from "zustand";
 import { persist } from "zustand/middleware";
 import { z } from "zod";
+import { env } from "~/env";
 
 export const InputPricePeriodSchema = z.union([
   z.literal("current"),
@@ -106,7 +107,7 @@ function mergeStates(
   currentState: SettingsState,
   persistedState: DeepPartialPersistedState,
 ): SettingsState {
-  return {
+  const mergedState = {
     ...currentState,
     settings: {
       levels: strictMergeRecords(
@@ -153,6 +154,17 @@ function mergeStates(
       },
     },
   };
+
+  if (env.NEXT_PUBLIC_PRECENTILE_MARKET_ENABLED === "false") {
+    if (mergedState.settings.market.inputPricePeriod === "p90") {
+      mergedState.settings.market.inputPricePeriod = "current";
+    }
+    if (mergedState.settings.market.outputPricePeriod === "p10") {
+      mergedState.settings.market.outputPricePeriod = "current";
+    }
+  }
+
+  return mergedState;
 }
 
 export const useSettingsStore = create<SettingsState>()(
