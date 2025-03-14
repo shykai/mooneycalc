@@ -14,7 +14,7 @@ export type Market = z.infer<typeof MarketSchema>;
 
 export async function fetchMarket(name: string): Promise<Market> {
   const response = await fetch(
-    `https://raw.githubusercontent.com/holychikenz/MWIApi/main/${name}`,
+    `https://ghproxy.net/https://raw.githubusercontent.com/holychikenz/MWIApi/main/${name}`,
     { next: { revalidate: 60 } },
   );
 

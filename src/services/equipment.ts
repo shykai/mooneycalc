@@ -37,6 +37,7 @@ export function getEquipmentBonuses(
   bonuses[BUFF_TYPE_GATHERING] += stats.gatheringQuantity;
   bonuses[BUFF_TYPE_RARE_FIND] += stats.skillingRareFind;
   bonuses[BUFF_TYPE_WISDOM] += stats.skillingExperience;
+  bonuses[BUFF_TYPE_ACTION_SPEED] += stats.skillingSpeed;
 
   if (actionType === "/action_types/milking") {
     bonuses[BUFF_TYPE_ACTION_SPEED] += stats.milkingSpeed;
@@ -69,6 +70,9 @@ export function getEquipmentBonuses(
   if (actionType === "/action_types/brewing") {
     bonuses[BUFF_TYPE_ACTION_SPEED] += stats.brewingSpeed;
     bonuses[BUFF_TYPE_EFFICIENCY] += stats.brewingEfficiency;
+  }
+  if (actionType === "/action_types/alchemy") {
+    bonuses[BUFF_TYPE_ACTION_SPEED] += stats.alchemySpeed;
   }
   if (actionType === "/action_types/enhancing") {
     bonuses[BUFF_TYPE_ACTION_SPEED] += stats.enhancingSpeed;

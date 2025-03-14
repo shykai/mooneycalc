@@ -25,7 +25,7 @@ export function addBonuses(...effects: Bonuses[]) {
   const result: Bonuses = { ...zeroBonuses };
   for (const effect of effects) {
     for (const [key, value] of Object.entries(effect)) {
-      result[key] += value;
+      result[key] = (result[key] ?? 0) + value;
     }
   }
   return result;
@@ -42,6 +42,7 @@ export function getLevelBonus(skillHrid: string, bonuses: Bonuses) {
     "/skills/cooking": "/buff_types/cooking_level",
     "/skills/brewing": "/buff_types/brewing_level",
     "/skills/enhancing": "/buff_types/enhancing_level",
+    "/skills/alchemy" : "/buff_types/alchemy_level",
   };
 
   const bonusName = skillToBonusMap[skillHrid];

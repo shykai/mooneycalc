@@ -27,42 +27,49 @@ const teaCombinationsByActionType: Record<string, string[][]> = {
   "/action_types/milking": chooseUpTo(3, [
     "/items/milking_tea",
     "/items/super_milking_tea",
+    "/items/ultra_milking_tea",
     "/items/efficiency_tea",
     "/items/gathering_tea",
   ]),
   "/action_types/foraging": chooseUpTo(3, [
     "/items/foraging_tea",
     "/items/super_foraging_tea",
+    "/items/ultra_foraging_tea",
     "/items/efficiency_tea",
     "/items/gathering_tea",
   ]),
   "/action_types/woodcutting": chooseUpTo(3, [
     "/items/woodcutting_tea",
     "/items/super_woodcutting_tea",
+    "/items/ultra_woodcutting_tea",
     "/items/efficiency_tea",
     "/items/gathering_tea",
   ]),
   "/action_types/cheesesmithing": chooseUpTo(3, [
     "/items/cheesesmithing_tea",
     "/items/super_cheesesmithing_tea",
+    "/items/ultra_cheesesmithing_tea",
     "/items/efficiency_tea",
     "/items/artisan_tea",
   ]),
   "/action_types/crafting": chooseUpTo(3, [
     "/items/crafting_tea",
     "/items/super_crafting_tea",
+    "/items/ultra_crafting_tea",
     "/items/efficiency_tea",
     "/items/artisan_tea",
   ]),
   "/action_types/tailoring": chooseUpTo(3, [
     "/items/tailoring_tea",
     "/items/super_tailoring_tea",
+    "/items/ultra_tailoring_tea",
     "/items/efficiency_tea",
     "/items/artisan_tea",
   ]),
   "/action_types/cooking": chooseUpTo(3, [
     "/items/cooking_tea",
     "/items/super_cooking_tea",
+    "/items/ultra_cooking_tea",
     "/items/efficiency_tea",
     "/items/gourmet_tea",
     "/items/artisan_tea",
@@ -70,9 +77,12 @@ const teaCombinationsByActionType: Record<string, string[][]> = {
   "/action_types/brewing": chooseUpTo(3, [
     "/items/brewing_tea",
     "/items/super_brewing_tea",
+    "/items/ultra_brewing_tea",
     "/items/efficiency_tea",
     "/items/gourmet_tea",
     "/items/artisan_tea",
+  ]),
+  "/action_types/alchemy": chooseUpTo(3, [
   ]),
 };
 
@@ -90,7 +100,7 @@ function getTeaBonuses(actionType: string, teaHrid: string) {
   const tea = gameData.itemDetailMap[teaHrid]!;
   const buffEffects = { ...zeroBonuses };
 
-  if (tea.consumableDetail.buffs === undefined) {
+  if (tea.consumableDetail === undefined || tea.consumableDetail.buffs === undefined) {
     console.log(`No buffs for tea ${teaHrid}`);
     return buffEffects;
   }
@@ -101,7 +111,7 @@ function getTeaBonuses(actionType: string, teaHrid: string) {
   }
 
   for (const buff of tea.consumableDetail.buffs!) {
-    buffEffects[buff.typeHrid] += buff.flatBoost;
+    buffEffects[buff.typeHrid] = (buffEffects[buff.typeHrid] ?? 0) + buff.flatBoost;
   }
 
   return buffEffects;

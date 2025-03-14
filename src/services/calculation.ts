@@ -58,7 +58,7 @@ function getHouseBonuses(actionType: string, settings: Settings) {
     if (houseRoom.usableInActionTypeMap[actionType] !== true) continue;
 
     for (const buff of [...houseRoom.actionBuffs, ...houseRoom.globalBuffs]) {
-      buffEffects[buff.typeHrid] +=
+      buffEffects[buff.typeHrid] = (buffEffects[buff.typeHrid] ?? 0) +
         buff.flatBoost + buff.flatBoostLevelBonus * (level - 1);
     }
   }
@@ -237,17 +237,17 @@ function getDrinkSlots(settings: Settings) {
   const pouchHrid = settings.equipment["/equipment_types/pouch"];
   if (!pouchHrid) return 1;
   const pouch = gameData.itemDetailMap[pouchHrid];
-  if (pouch === undefined) return 1;
+  if (pouch === undefined || pouch.equipmentDetail === undefined) return 1;
   return 1 + pouch.equipmentDetail.combatStats.drinkSlots;
 }
 
 export function computeActions(settings: Settings, market: Market) {
   let filteredActions = actions;
 
-  // Filter out combat and enhancement actions
+  // Filter out combat and enhancement and alchemy actions
   filteredActions = filteredActions.filter(
     (a) =>
-      a.type !== "/action_types/combat" && a.type !== "/action_types/enhancing",
+      a.type !== "/action_types/combat" && a.type !== "/action_types/enhancing" && a.type !== "/action_types/alchemy",
   );
 
   // Filter out actions that involve untradable items

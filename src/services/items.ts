@@ -10,14 +10,16 @@ export function itemName(itemHrid: string) {
 
 export function itemsByEquipmentType(equipmentTypeHrid: string) {
   return Object.values(gameData.itemDetailMap)
-    .filter((item) => item.equipmentDetail.type === equipmentTypeHrid)
+    .filter((item) => item.equipmentDetail && item.equipmentDetail.type === equipmentTypeHrid)
     .sort((a, b) => a.sortIndex - b.sortIndex);
 }
 
 export function isSkillingEquipment(item: ItemDetail) {
   return (
-    Object.values(item.equipmentDetail.noncombatStats).some(
-      (stat) => stat !== 0,
-    ) || item.equipmentDetail.combatStats.drinkSlots > 0
+    item.equipmentDetail && (
+      Object.values(item.equipmentDetail.noncombatStats).some(
+        (stat) => stat !== 0,
+      ) || item.equipmentDetail.combatStats.drinkSlots > 0
+    )
   );
 }
