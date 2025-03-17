@@ -14,6 +14,37 @@ export const equipmentTypes = Object.values(
   gameData.equipmentTypeDetailMap,
 ).sort((a, b) => a.sortIndex - b.sortIndex);
 
+
+const equipmentTypeNamesZH = {
+  "/equipment_types/two_hand": "\u53cc\u624b",
+  "/equipment_types/main_hand": "\u4e3b\u624b",
+  "/equipment_types/off_hand": "\u526f\u624b",
+  "/equipment_types/back": "\u80cc\u90e8",
+  "/equipment_types/head": "\u5934\u90e8",
+  "/equipment_types/body": "\u8eab\u4f53",
+  "/equipment_types/legs": "\u817f\u90e8",
+  "/equipment_types/hands": "\u624b\u90e8",
+  "/equipment_types/feet": "\u811a\u90e8",
+  "/equipment_types/pouch": "\u888b\u5b50",
+  "/equipment_types/neck": "\u9879\u94fe",
+  "/equipment_types/earrings": "\u8033\u73af",
+  "/equipment_types/ring": "\u6212\u6307",
+  "/equipment_types/trinket": "\u9970\u54c1",
+  "/equipment_types/milking_tool": "\u6324\u5976\u5de5\u5177",
+  "/equipment_types/foraging_tool": "\u91c7\u6458\u5de5\u5177",
+  "/equipment_types/woodcutting_tool": "\u4f10\u6728\u5de5\u5177",
+  "/equipment_types/cheesesmithing_tool":
+    "\u5976\u916a\u953b\u9020\u5de5\u5177",
+  "/equipment_types/crafting_tool": "\u5236\u4f5c\u5de5\u5177",
+  "/equipment_types/tailoring_tool": "\u7f1d\u7eab\u5de5\u5177",
+  "/equipment_types/cooking_tool": "\u70f9\u996a\u5de5\u5177",
+  "/equipment_types/brewing_tool": "\u51b2\u6ce1\u5de5\u5177",
+  "/equipment_types/alchemy_tool": "\u70bc\u91d1\u5de5\u5177",
+  "/equipment_types/enhancing_tool": "\u5f3a\u5316\u5de5\u5177",
+}
+export function equipmentTypeNameZH(hrid: string) {
+  return equipmentTypeNamesZH[hrid] ?? hrid;
+}
 export function equipmentTypeName(hrid: string) {
   return gameData.equipmentTypeDetailMap[hrid]?.name ?? hrid;
 }

@@ -3,19 +3,21 @@
 import { useSettingsStore } from "~/services/settings";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { skills } from "~/services/skills";
+import { skills, skillNameZH } from "~/services/skills";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { equipmentTypes } from "~/services/equipment";
+import { equipmentTypes, equipmentTypeNameZH } from "~/services/equipment";
 import {
   isSkillingEquipment,
-  itemName,
+  itemName, itemNameZH,
   itemsByEquipmentType,
 } from "~/services/items";
+import { houseNameZH } from "~/services/house-rooms";
+import {communityBuffsNameZH} from "~/services/community-buffs";
 import { BidAskSlider } from "./bid-ask-slider";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Checkbox } from "./ui/checkbox";
@@ -44,26 +46,26 @@ export function SettingsForm() {
   return (
     <Tabs defaultValue="levels">
       <TabsList>
-        <TabsTrigger value="levels">Levels</TabsTrigger>
-        <TabsTrigger value="skilling-equipment">Skilling Equipment</TabsTrigger>
-        <TabsTrigger value="house">House</TabsTrigger>
-        <TabsTrigger value="community-buffs">Community Buffs</TabsTrigger>
-        <TabsTrigger value="market">Market</TabsTrigger>
-        <TabsTrigger value="other">Other</TabsTrigger>
+        <TabsTrigger value="levels">等级</TabsTrigger>
+        <TabsTrigger value="skilling-equipment">装备</TabsTrigger>
+        <TabsTrigger value="house">房屋</TabsTrigger>
+        <TabsTrigger value="community-buffs">社区增益</TabsTrigger>
+        <TabsTrigger value="market">市场</TabsTrigger>
+        <TabsTrigger value="other">其他</TabsTrigger>
       </TabsList>
       <div className="h-4"></div>
       <TabsContent value="levels">
         <Card>
           <CardHeader>
-            <CardTitle>Levels</CardTitle>
+            <CardTitle>等级</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-flow-row grid-cols-[repeat(auto-fit,minmax(160px,_1fr))] gap-4">
-            {skillingSkills.map(({ hrid, name }) => {
+            {skillingSkills.map(({ hrid}) => {
               const level = settings.levels[hrid]!;
 
               return (
                 <div key={hrid} className="grid items-center gap-1.5">
-                  <Label htmlFor={hrid}>{name}</Label>
+                  <Label htmlFor={hrid}>{skillNameZH(hrid)}</Label>
                   <Input
                     type="number"
                     id={hrid}
@@ -87,11 +89,11 @@ export function SettingsForm() {
       <TabsContent value="skilling-equipment">
         <Card>
           <CardHeader>
-            <CardTitle>Skilling Equipment</CardTitle>
+            <CardTitle>装备</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-flow-row grid-cols-[repeat(auto-fit,minmax(220px,_1fr))] gap-4">
-              {equipmentTypes.map(({ hrid, name }) => {
+              {equipmentTypes.map(({ hrid}) => {
                 const selectedEquipment = settings.equipment[hrid]!;
 
                 // Filter out items that provide no non-combat bonuses
@@ -100,14 +102,14 @@ export function SettingsForm() {
 
                 return (
                   <div key={hrid} className="grid items-center gap-1.5">
-                    <Label htmlFor={hrid}>{name}</Label>
+                    <Label htmlFor={hrid}>{equipmentTypeNameZH(hrid)}</Label>
                     <div className="flex items-center gap-1">
                       <DropdownMenu>
                         <DropdownMenuTrigger className="flex-grow">
                           <Input
                             type="text"
                             id={hrid}
-                            value={itemName(selectedEquipment) ?? ""}
+                            value={itemNameZH(selectedEquipment) ?? ""}
                             readOnly
                             className="cursor-pointer"
                           />
@@ -124,10 +126,10 @@ export function SettingsForm() {
                               })
                             }
                           >
-                            None
+                            空
                           </DropdownMenuItem>
                           {equipmentOptions.map(
-                            ({ hrid: itemHrid, name: itemName }) => (
+                            ({ hrid: itemHrid}) => (
                               <DropdownMenuItem
                                 key={itemHrid}
                                 onClick={() =>
@@ -140,7 +142,7 @@ export function SettingsForm() {
                                   })
                                 }
                               >
-                                {itemName}
+                                {itemNameZH(itemHrid)}
                               </DropdownMenuItem>
                             ),
                           )}
@@ -174,7 +176,7 @@ export function SettingsForm() {
       <TabsContent value="house">
         <Card>
           <CardHeader>
-            <CardTitle>House</CardTitle>
+            <CardTitle>房屋</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-flow-row grid-cols-[repeat(auto-fit,minmax(160px,_1fr))] gap-4">
@@ -186,7 +188,7 @@ export function SettingsForm() {
                     key={houseRoom.hrid}
                     className="grid items-center gap-1.5"
                   >
-                    <Label htmlFor={houseRoom.hrid}>{houseRoom.name}</Label>
+                    <Label htmlFor={houseRoom.hrid}>{houseNameZH(houseRoom.hrid)}</Label>
                     <Input
                       type="number"
                       id={houseRoom.hrid}
@@ -213,7 +215,7 @@ export function SettingsForm() {
       <TabsContent value="community-buffs">
         <Card>
           <CardHeader>
-            <CardTitle>Community Buffs</CardTitle>
+            <CardTitle>社区增益</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-flow-row grid-cols-[repeat(auto-fit,minmax(160px,_1fr))] gap-4">
@@ -228,7 +230,7 @@ export function SettingsForm() {
                       className="grid items-center gap-1.5"
                     >
                       <Label htmlFor={communityBuffType.hrid}>
-                        {communityBuffType.name}
+                        {communityBuffsNameZH(communityBuffType.hrid)}
                       </Label>
                       <Input
                         type="number"
@@ -260,12 +262,12 @@ export function SettingsForm() {
       <TabsContent value="market">
         <Card>
           <CardHeader>
-            <CardTitle>Market</CardTitle>
+            <CardTitle>市场</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-around">
               <BidAskSlider
-                label="Input Item Prices"
+                label="原材料购入价格"
                 inverted={true}
                 value={settings.market.inputBidAskProportion}
                 updateValue={(value) =>
@@ -279,7 +281,7 @@ export function SettingsForm() {
                 }
               />
               <BidAskSlider
-                label="Output Item Prices"
+                label="成品卖出价格"
                 inverted={false}
                 value={settings.market.outputBidAskProportion}
                 updateValue={(value) =>
@@ -310,11 +312,11 @@ export function SettingsForm() {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="latest" id="latest" />
-                  <Label htmlFor="latest">Latest Prices</Label>
+                  <Label htmlFor="latest">最新价格</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="median" id="median" />
-                  <Label htmlFor="median">24h Median Prices</Label>
+                  <Label htmlFor="median">24小时中位价</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -324,7 +326,7 @@ export function SettingsForm() {
       <TabsContent value="other">
         <Card>
           <CardHeader>
-            <CardTitle>Other</CardTitle>
+            <CardTitle>其他</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-4">
@@ -352,7 +354,7 @@ export function SettingsForm() {
                   htmlFor="hide-unmet-level-requirements"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Hide actions with unmet level requirements
+                  隐藏未达到等级要求的操作
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -377,7 +379,7 @@ export function SettingsForm() {
                   htmlFor="show-auto-teas"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Show auto-teas
+                  自动配置茶叶
                 </Label>
               </div>
             </div>

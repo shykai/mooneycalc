@@ -107,7 +107,6 @@ export const ActionDetailSchema = z.object({
   function: z.string(),
   type: z.string(),
   category: z.string(),
-  name: z.string(),
   levelRequirement: z.object({
     skillHrid: z.string(),
     level: z.number(),

@@ -1,4 +1,4 @@
-import { actionTypes, actions } from "./actions";
+import { actionTypes, actions, actionNameZH } from "./actions";
 import {
   BUFF_TYPE_EFFICIENCY,
   BUFF_TYPE_GATHERING,
@@ -15,7 +15,7 @@ import { communityBuffs } from "./community-buffs";
 import { type ActionDetail, gameData, type ItemCount } from "./data";
 import { getEquipmentBonuses } from "./equipment";
 import { houseRooms } from "./house-rooms";
-import { itemName } from "./items";
+import { itemName, itemNameZH } from "./items";
 import { type Market } from "./market-fetch";
 import { type Settings } from "./settings";
 import {
@@ -219,7 +219,7 @@ function computeSingleAction(
 
   return {
     id: action.hrid,
-    name: action.name,
+    name: actionNameZH(action.hrid),
     skillHrid: action.levelRequirement.skillHrid,
     levelRequired: action.levelRequirement.level,
     teas: teaLoadout.teaHrids,

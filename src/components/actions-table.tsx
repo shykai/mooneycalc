@@ -5,7 +5,7 @@ import { useSettingsStore } from "~/services/settings";
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./ui/data-table-column-header";
 import { useMarket } from "~/services/market";
-import { skillName } from "~/services/skills";
+import { skillName, skillNameZH } from "~/services/skills";
 import ItemDetail from "./item-detail";
 import { useMemo } from "react";
 
@@ -13,27 +13,27 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Action" />
+      <DataTableColumnHeader column={column} title="操作" />
     ),
   },
   {
     accessorKey: "skillHrid",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Skill" />
+      <DataTableColumnHeader column={column} title="专业" />
     ),
-    cell: ({ row }) => <div>{skillName(row.original.skillHrid)}</div>,
+    cell: ({ row }) => <div>{skillNameZH(row.original.skillHrid)}</div>,
   },
   {
     accessorKey: "levelRequired",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Level" sortable />
+      <DataTableColumnHeader column={column} title="等级" sortable />
     ),
     cell: ({ row }) => row.original.levelRequired,
   },
   {
     accessorKey: "teas",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Teas" />
+      <DataTableColumnHeader column={column} title="茶" />
     ),
     cell: ({ row }) => {
       const action = row.original;
@@ -51,7 +51,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "inputs",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Inputs" />
+      <DataTableColumnHeader column={column} title="原料" />
     ),
     cell: ({ row }) => {
       const action = row.original;
@@ -72,7 +72,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "inputsPrice",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Inputs price" sortable />
+      <DataTableColumnHeader column={column} title="原材料价格" sortable />
     ),
     cell: ({ row }) => (
       <div className="max-w-28 text-right">
@@ -85,7 +85,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "outputs",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Outputs" />
+      <DataTableColumnHeader column={column} title="成品" />
     ),
     cell: ({ row }) => {
       const action = row.original;
@@ -106,7 +106,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "outputsPrice",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Outputs price" sortable />
+      <DataTableColumnHeader column={column} title="产品价格" sortable />
     ),
     cell: ({ row }) => (
       <div className="max-w-28 text-right">
@@ -119,7 +119,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "outputMaxBidAskSpread",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Output spread" sortable />
+      <DataTableColumnHeader column={column} title="市场风险" sortable />
     ),
     cell: ({ row }) => (
       <div className="max-w-28 text-right">
@@ -132,7 +132,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "actionsPerHour",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions/h" sortable />
+      <DataTableColumnHeader column={column} title="每小时行动次数" sortable />
     ),
     cell: ({ row }) => (
       <div className="text-right">{row.original.actionsPerHour.toFixed(0)}</div>
@@ -141,7 +141,7 @@ export const columns: ColumnDef<ComputedAction>[] = [
   {
     accessorKey: "profit",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Profit/h" sortable />
+      <DataTableColumnHeader column={column} title="每小时利润" sortable />
     ),
     cell: ({ row }) => (
       <div className="max-w-28 text-right">
